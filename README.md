@@ -101,7 +101,7 @@ The database covers figures from across history including:
 ```
 nexus-per-saecula/
 │
-├── six-degrees.html     # The entire game — open this in a browser
+├── index.html     # The entire game — open this in a browser
 └── README.md            # This file
 ```
 
