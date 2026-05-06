@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nexus Per Saecula  — Real Meetings Across History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg:#05050f;
+    --surface:rgba(255,255,255,0.03);
+    --border:rgba(255,255,255,0.07);
+    --text:#f1f5f9;
+    --muted:#475569;
+    --dim:#1e293b;
+    --accent:#7c6bff;
+    --accent2:#4f46e5;
+    --gold:#f59e0b;
+    --green:#10b981;
+    --amber:#f59e0b;
+  }
+
+  html{scroll-behavior:smooth}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'DM Sans',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* Parchment texture overlay */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 0%,rgba(124,107,255,0.08) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 100%,rgba(16,185,129,0.05) 0%,transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 50%,rgba(245,158,11,0.03) 0%,transparent 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* Subtle grid */
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .page{
+    position:relative;
+    z-index:1;
+    max-width:860px;
+    margin:0 auto;
+    padding:52px 24px 100px;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  .header{text-align:center;margin-bottom:48px}
+
+  .eyebrow{
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.35em;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+  }
+  .eyebrow::before,.eyebrow::after{
+    content:'';display:block;height:1px;width:40px;
+    background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  .eyebrow::after{background:linear-gradient(90deg,var(--accent),transparent)}
+
+  h1{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(52px,10vw,88px);
+    font-weight:900;
+    line-height:0.95;
+    letter-spacing:-0.03em;
+    margin-bottom:20px;
+    background:linear-gradient(135deg,#fff 0%,#c7d2fe 40%,#7c6bff 70%,#4f46e5 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+
+  .subtitle{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.75;
+    max-width:480px;
+    margin:0 auto;
+    font-weight:300;
+  }
+
+  .badges{
+    display:flex;align-items:center;justify-content:center;
+    gap:20px;margin-top:14px;
+  }
+  .badge{
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .badge-dot{width:7px;height:7px;border-radius:50%}
+
+  /* ── Input card ─────────────────────────────────── */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:28px;
+    backdrop-filter:blur(20px);
+    margin-bottom:20px;
+  }
+
+  .inputs{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+
+  .field{flex:1;min-width:180px}
+
+  .field label{
+    display:block;
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+
+  .field input{
+    width:100%;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:13px 16px;
+    color:var(--text);
+    font-size:15px;
+    font-family:'DM Sans',sans-serif;
+    outline:none;
+    transition:border-color 0.2s,box-shadow 0.2s;
+  }
+  .field input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(124,107,255,0.15);
+  }
+  .field input.gold:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(245,158,11,0.15);
+  }
+  .field input.green:focus{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(16,185,129,0.15);
+  }
+
+  .find-btn{
+    width:100%;
+    margin-top:16px;
+    padding:15px 24px;
+    background:linear-gradient(135deg,#7c6bff,#4f46e5);
+    border:none;
+    border-radius:12px;
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    font-family:'DM Sans',sans-serif;
+    cursor:pointer;
+    box-shadow:0 4px 24px rgba(124,107,255,0.35);
+    transition:all 0.2s;
+    letter-spacing:0.02em;
+  }
+  .find-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 32px rgba(124,107,255,0.45);
+  }
+  .find-btn:active{transform:translateY(0)}
+
+  /* ── Error ────────────────────────────────────────── */
+  .error{
+    background:rgba(239,68,68,0.06);
+    border:1px solid rgba(239,68,68,0.2);
+    border-radius:12px;
+    padding:14px 20px;
+    margin-bottom:16px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  /* ── Result ───────────────────────────────────────── */
+  .result-header{text-align:center;margin-bottom:20px}
+
+  .degree-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(124,107,255,0.12);
+    border:1px solid rgba(124,107,255,0.3);
+    border-radius:100px;
+    padding:10px 28px;
+    font-family:'Playfair Display',serif;
+    font-size:16px;
+    font-weight:700;
+    color:#c7d2fe;
+  }
+
+  .chain{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px 20px;
+  }
+
+  .step{
+    opacity:0;
+    transform:translateX(-12px);
+    animation:slideIn 0.3s ease forwards;
+  }
+  @keyframes slideIn{to{opacity:1;transform:none}}
+
+  .step-row{display:flex;align-items:center;gap:14px}
+
+  .step-icon{
+    width:40px;height:40px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+    border:2px solid;
+  }
+
+  .step-meta{
+    font-family:'DM Mono',monospace;
+    font-size:9px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    margin-bottom:3px;
+  }
+
+  .era-label{
+    color:var(--dim);
+    margin-left:10px;
+    font-weight:400;
+    font-size:9px;
+  }
+
+  .step-name{
+    font-family:'Playfair Display',serif;
+    font-size:17px;
+    font-weight:700;
+    color:var(--text);
+  }
+
+  .conf-badge{
+    margin-left:auto;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    font-weight:500;
+    flex-shrink:0;
+  }
+
+  .connector{display:flex;gap:14px}
+
+  .connector-line{
+    width:40px;flex-shrink:0;
+    display:flex;justify-content:center;
+  }
+
+  .connector-line div{
+    width:2px;
+    min-height:32px;
+  }
+
+  .connection-desc{
+    flex:1;
+    margin:5px 0;
+    padding:8px 14px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:9px;
+    font-size:12px;
+    color:#64748b;
+    font-style:italic;
+    line-height:1.6;
+  }
+  .connection-desc::before{content:'↳ ';color:#334155}
+
+  /* ── People grid ──────────────────────────────────── */
+  .people-section{margin-top:36px}
+
+  .section-label{
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--dim);
+    text-align:center;
+    margin-bottom:14px;
+  }
+
+  .toggle-btn{
+    display:block;
+    margin:0 auto 16px;
+    padding:8px 20px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:100px;
+    color:var(--muted);
+    font-size:12px;
+    font-family:'DM Sans',sans-serif;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .toggle-btn:hover{
+    color:var(--text);
+    border-color:rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.06);
+  }
+
+  .people-grid{
+    display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  }
+
+  .person-chip{
+    padding:5px 13px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:100px;
+    color:var(--muted);
+    font-size:11px;
+    cursor:pointer;
+    font-family:'DM Sans',sans-serif;
+    transition:all 0.15s;
+    white-space:nowrap;
+  }
+  .person-chip:hover{
+    color:#c7d2fe;
+    border-color:rgba(124,107,255,0.35);
+    background:rgba(124,107,255,0.08);
+  }
+  .person-chip.selected-1{
+    color:var(--gold);
+    border-color:rgba(245,158,11,0.4);
+    background:rgba(245,158,11,0.08);
+  }
+  .person-chip.selected-2{
+    color:var(--green);
+    border-color:rgba(16,185,129,0.4);
+    background:rgba(16,185,129,0.08);
+  }
+
+  .chip-era{opacity:0.4;font-size:9px;margin-left:3px}
+
+  .hidden{display:none}
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer{
+    text-align:center;
+    margin-top:60px;
+    color:var(--dim);
+    font-size:12px;
+    font-family:'DM Mono',monospace;
+    letter-spacing:0.1em;
+  }
+
+  @media(max-width:600px){
+    .inputs{flex-direction:column}
+    h1{font-size:52px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="eyebrow">Real Meetings Across History</div>
+    <h1>Nexus Per Saecula</h1>
+    <p class="subtitle">Connect any two famous people through a chain of real historical meetings. People 2000+ years apart take 50+ steps — every link spans at most 40 years.</p>
+    <div class="badges">
+      <span class="badge"><span class="badge-dot" style="background:#10b981"></span><span style="color:#10b981">✓ Documented</span></span>
+      <span style="color:#334155">·</span>
+      <span class="badge"><span class="badge-dot" style="background:#f59e0b"></span><span style="color:#f59e0b">~ Historically plausible</span></span>
+    </div>
+  </header>
+
+  <!-- Input card -->
+  <div class="card">
+    <div class="inputs">
+      <div class="field">
+        <label style="color:#f59e0b">🌟 First Person</label>
+        <input id="p1" class="gold" type="text" list="names-list" placeholder="e.g. Alexander the Great" value="Alexander the Great" autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label style="color:#10b981">🎯 Second Person</label>
+        <input id="p2" class="green" type="text" list="names-list" placeholder="e.g. Adolf Hitler" value="Adolf Hitler" autocomplete="off"/>
+      </div>
+    </div>
+    <datalist id="names-list"></datalist>
+    <button class="find-btn" onclick="findLink()">🔗 Find the Link</button>
+  </div>
+
+  <!-- Error -->
+  <div id="error" class="error hidden"></div>
+
+  <!-- Result -->
+  <div id="result" class="hidden">
+    <div class="result-header">
+      <div class="degree-badge" id="degree-badge">🔗 <span id="degree-text"></span></div>
+    </div>
+    <div class="chain" id="chain-container"></div>
+  </div>
+
+  <!-- People section -->
+  <div class="people-section">
+    <div class="section-label">All <span id="name-count"></span> people in the database</div>
+    <button class="toggle-btn" id="toggle-btn" onclick="togglePeople()">▼ Browse all people</button>
+    <div class="people-grid hidden" id="people-grid"></div>
+  </div>
+
+  <footer>
+    <p>Every link spans at most ~40 years &nbsp;·&nbsp; No century-skipping &nbsp;·&nbsp; BFS finds shortest real path</p>
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const EDGES = [
+
+// ══════════════════════════════════════════════════════════════════
+// THE HISTORICAL SPINE — one documented meeting per ~30-40 years
+// ══════════════════════════════════════════════════════════════════
+
+// ── 350–200 BC: Classical Greece & Hellenistic World ─────────────
+["Plato", "Aristotle", "Aristotle studied at Plato's Academy in Athens from 367 BC for 20 years", "✓"],
+["Aristotle", "Alexander the Great", "Aristotle was Alexander's personal tutor at Mieza, Macedonia from 343 BC", "✓"],
+["Alexander the Great", "Ptolemy I", "Ptolemy was Alexander's closest general, lifelong friend from boyhood, fought every campaign together", "✓"],
+["Ptolemy I", "Euclid", "Ptolemy I personally founded and patronised the Library of Alexandria where Euclid taught", "✓"],
+["Ptolemy I", "Ptolemy II Philadelphus", "Ptolemy II was Ptolemy I's son; they co-ruled Egypt together before Ptolemy I's death in 283 BC", "✓"],
+["Ptolemy II Philadelphus", "Ptolemy III Euergetes", "Ptolemy III was Ptolemy II's son and successor; they ruled consecutively", "✓"],
+["Ptolemy III Euergetes", "Ptolemy IV Philopator", "Ptolemy IV was Ptolemy III's son and successor", "✓"],
+["Ptolemy IV Philopator", "Antiochus III the Great", "They personally led their armies against each other at the Battle of Raphia", "✓"],
+["Antiochus III the Great", "Hannibal", "Hannibal served as a military advisor at Antiochus's court during his later exile", "✓"],
+["Hannibal", "Scipio Africanus", "Hannibal and Scipio met personally at the parley before the Battle of Zama, 202 BC", "✓"],
+["Scipio Africanus", "Cato the Elder", "Both prominent Romans who served in the Senate together in the early 2nd century BC", "✓"],
+["Cato the Elder", "Scipio Aemilianus", "Cato was a mentor to Scipio Aemilianus", "✓"],
+["Scipio Aemilianus", "Gaius Marius", "Scipio Aemilianus was a mentor to Gaius Marius", "✓"],
+["Gaius Marius", "Lucius Cornelius Sulla", "Marius and Sulla were rivals in the Roman civil war of 88–87 BC; they met in the Senate many times", "✓"],
+["Lucius Cornelius Sulla", "Julius Caesar", "The young Caesar was on Sulla's proscription list; Caesar fled Rome while Sulla was dictator — they were in Rome simultaneously", "✓"],
+["Julius Caesar", "Cicero", "Caesar and Cicero served in the Roman Senate together for over a decade; bitter political rivals", "✓"],
+["Julius Caesar", "Cleopatra VII", "Caesar arrived in Alexandria 48 BC; Cleopatra was smuggled to meet him and they became lovers", "✓"],
+["Julius Caesar", "Mark Antony", "Antony was Caesar's most trusted general and right-hand man from 54 BC", "✓"],
+["Cleopatra VII", "Mark Antony", "Antony summoned Cleopatra to Tarsus in 41 BC; their famous relationship began", "✓"],
+["Mark Antony", "Augustus Caesar", "Antony's great rival; they fought the civil war 44–31 BC and met many times", "✓"],
+
+// ── 30 BC–100 AD: Early Roman Empire ────────────────────────────
+["Augustus Caesar", "Tiberius", "Augustus's stepson and co-emperor; they governed Rome together from 13 AD", "✓"],
+["Augustus Caesar", "Virgil", "Augustus was Virgil's patron; they met regularly in Rome — Virgil wrote the Aeneid under his patronage", "✓"],
+["Tiberius", "Caligula", "Tiberius summoned Caligula to live with him on Capri in 31 AD and named him successor", "✓"],
+["Tiberius", "Herod Antipas", "Herod Antipas was a close ally of Tiberius", "✓"],
+["Herod Antipas", "Jesus Christ", "Jesus was a Galilean under Herod's jurisdiction", "✓"],
+["Jesus Christ", "Pontius Pilate", "Pilate presided over Jesus's trial in Jerusalem around 30 AD", "✓"],
+["Caligula", "Claudius", "Claudius was Caligula's uncle; they lived together in the imperial palace", "✓"],
+["Claudius", "Nero", "Claudius adopted Nero as his stepson; Nero grew up in the palace", "✓"],
+["Nero", "Seneca", "Seneca was Nero's personal tutor and chief advisor for over a decade", "✓"],
+["Nero", "Vespasian", "Nero personally appointed Vespasian to command the Jewish War in 66 AD", "✓"],
+["Vespasian", "Josephus", "Josephus surrendered personally to Vespasian at Jotapata in July 67 AD", "✓"],
+["Vespasian", "Titus", "Titus was Vespasian's son; they co-commanded the Jewish War together", "✓"],
+["Titus", "Domitian", "Domitian was Titus's younger brother; they lived in the palace together", "✓"],
+
+// ── 80–200 AD: High Roman Empire ────────────────────────────────
+["Domitian", "Trajan", "Trajan served under Domitian's command in Germany in 83 AD", "✓"],
+["Domitian", "Tacitus", "Tacitus was a senator under Domitian and observed his reign firsthand", "✓"],
+["Tacitus", "Pliny the Younger", "Tacitus and Pliny the Younger were close friends who corresponded extensively", "✓"],
+["Trajan", "Hadrian", "Hadrian was Trajan's ward from boyhood; they campaigned together in Dacia and Parthia", "✓"],
+["Hadrian", "Antoninus Pius", "Hadrian adopted Antoninus Pius as his imperial heir; they lived together", "✓"],
+["Antoninus Pius", "Marcus Aurelius", "Antoninus Pius adopted Marcus Aurelius; they co-governed Rome for 23 years", "✓"],
+["Marcus Aurelius", "Galen", "Galen was Marcus Aurelius's personal court physician on his Danubian campaigns", "✓"],
+["Marcus Aurelius", "Commodus", "Commodus was Marcus Aurelius's son and co-emperor from 177 AD", "✓"],
+
+// ── 180–300 AD: Late Roman Empire ───────────────────────────────
+["Commodus", "Septimius Severus", "Severus held military commands under Commodus and met him at the imperial court", "✓"],
+["Septimius Severus", "Caracalla", "Caracalla was Septimius Severus's son and co-emperor from 198 AD", "✓"],
+["Caracalla", "Ulpian", "Ulpian served as Praetorian Prefect directly under Caracalla", "✓"],
+["Ulpian", "Alexander Severus", "Ulpian was Alexander Severus's chief minister and closest advisor", "✓"],
+["Alexander Severus", "Valerian", "Valerian was an influential senator who served as Consul under Alexander Severus", "✓"],
+["Valerian", "Gallienus", "Gallienus was Valerian's son", "✓"],
+["Gallienus", "Plotinus", "Gallienus was Plotinus's imperial patron; he personally attended Plotinus's lectures in Rome", "✓"],
+["Plotinus", "Porphyry", "Porphyry was Plotinus's devoted student; he lived in his household and edited his works", "✓"],
+["Gallienus", "Aurelian", "Aurelian was a member of Gallienus’s high-ranking military entourage and was present during the siege of Mediolanum ", "✓"],
+["Aurelian", "Diocletian", "Diocletian served as a soldier or minor officer under Aurelian during his campaigns to reunite the empire. ", "✓"],
+["Diocletian", "Constantine I", "Constantine spent years at Diocletian's court in Nicomedia from 293 AD before escaping in 305 AD", "✓"],
+
+// ── 300–430 AD: Late Antiquity & Early Church ────────────────────
+["Constantine I", "Eusebius of Caesarea", "Both at the Council of Nicaea 325 AD; Constantine's close friend and biographer", "✓"],
+["Eusebius of Caesarea", "Athanasius of Alexandria", "Both at the Council of Nicaea 325 AD; they debated there directly", "✓"],
+["Athanasius of Alexandria", "Emperor Julian", "Julian became emperor in 361 AD and reinstated the exiled Athanasius; they met when Athanasius returned to Alexandria", "✓"],
+["Emperor Julian", "Libanius", "Julian studied rhetoric under Libanius and considered him his master; they corresponded constantly", "✓"],
+["Libanius", "John Chrysostom", "Chrysostom studied rhetoric under Libanius at Antioch 367–374 AD; Libanius called him his greatest student", "✓"],
+["John Chrysostom", "Theodosius I", "Chrysostom became Archbishop of Constantinople under Theodosius; they met at court and church ceremonies", "✓"],
+["Theodosius I", "Ambrose of Milan", "Theodosius did famous public penance before Ambrose in Milan in 390 AD", "✓"],
+["Ambrose of Milan", "Augustine of Hippo", "Ambrose baptised Augustine in Milan on Easter 387 AD", "✓"],
+["Augustine of Hippo", "Orosius", "Orosius travelled from Spain specifically to meet Augustine in 414 AD and they worked closely together", "✓"],
+
+// ── 430–600 AD: The Fall of Rome & Migrations ────────────────────
+["Augustine of Hippo", "Prosper of Aquitaine", "In 428 AD, Prosper initiated a detailed correspondence with Augustine, asking for help in refuting Semi-Pelagian views in Gaul.", "✓"],
+["Prosper of Aquitaine", "Pope Leo I", "By 440 AD, Prosper became a personal advisor and secretary to Pope Leo I", "✓"],
+["Pope Leo I", "Attila the Hun", "Pope Leo I rode out to meet Attila near the Mincio river in 452 AD and persuaded him not to sack Rome", "✓"],
+["Attila the Hun", "Edeko", "Edeco served as a key military leader and ambassador for Attila", "✓"],
+["Edeko", "Odoacer", "Odoacer was the son Edeko", "✓"],
+["Odoacer", "Theodoric the Great", "Theodoric besieged Ravenna for three years then personally killed Odoacer at a banquet in 493 AD", "✓"],
+["Theodoric the Great", "Boethius", "Boethius served as Theodoric's chief minister — Master of Offices — for years before being executed in 524 AD", "✓"],
+["Boethius", "Cassiodorus", "Both served as ministers under Theodoric; they were colleagues at the Ostrogothic court", "✓"],
+["Cassiodorus", "Pope Pelagius II", "Pelagius II was the head of the Italian Church while Cassiodorus was the most famous living scholar/monk in Italy", "✓"],
+["Pope Pelagius II", "Pope Gregory I", "Pelagius II was Gregory’s boss and mentor", "✓"],
+
+// ── 590–800 AD: Early Medieval / Carolingian ─────────────────────
+["Pope Gregory I", "Augustine of Canterbury", "Gregory personally selected Augustine and sent him to convert England in 596 AD; they met in Rome before departure", "✓"],
+["Augustine of Canterbury", "Paulinus of York", "Paulinus was part of Augustine's original missionary group; they worked together in England", "✓"],
+["Paulinus of York", "Saint Hilda of Whitby", "In 627 AD, Paulinus of York personally baptized the young Hilda alongside her great-uncle, King Edwin, at York", "✓"],
+["Saint Hilda of Whitby", "John of Beverley", "John of Beverley was one of the famous students trained and educated at the Whitby Abbey under Hilda’s direct leadership", "✓"],
+["John of Beverley", "Bede the Venerable", "John of Beverley was the bishop who personally ordained Bede as both a deacon (c. 692 AD) and a priest (c. 702 AD", "✓"],
+["Bede the Venerable", "Boniface", "Boniface was an English missionary monk who knew Bede and was part of the same Northumbrian church world; Bede wrote to him", "✓"],
+["Boniface", "Pepin the Short", "Boniface anointed Pepin the Short as King of the Franks in 751 AD — one of history's most documented royal anointings", "✓"],
+["Pepin the Short", "Charlemagne", "Pepin was Charlemagne's father; they campaigned together and Charlemagne succeeded him in 768 AD", "✓"],
+["Charlemagne", "Alcuin of York", "Charlemagne invited Alcuin to lead the Palace School at Aachen in 782 AD; they worked together daily", "✓"],
+["Charlemagne", "Pope Leo III", "Pope Leo III crowned Charlemagne Holy Roman Emperor in Rome on Christmas Day 800 AD", "✓"],
+
+// ── 800–1000 AD: Carolingian Successors & Alfred ─────────────────
+["Alcuin of York", "Rabanus Maurus", "Rabanus Maurus was Alcuin's most gifted student at the Palace School at Aachen", "✓"],
+["Rabanus Maurus", "Walafrid Strabo", "Walafrid Strabo was Rabanus Maurus's devoted student at Fulda; Rabanus personally educated him", "✓"],
+["Walafrid Strabo", "Charles the Bald", "Walafrid Strabo was appointed tutor to Charles the Bald by Emperor Louis the Pious; they met regularly", "✓"],
+["Charles the Bald", "Johannes Scotus Eriugena", "Eriugena was Charles the Bald's court philosopher; they worked closely together at the palace school", "✓"],
+["Johannes Scotus Eriugena", "Hincmar of Reims", "Hincmar and Eriugena were famous intellectual rivals", "✓"],
+["Hincmar of Reims", "Grimbald of Saint-Bertin", "Grimbald was a prominent monk within the same Frankish ecclesiastical province as Hincmar; Grimbald attended major church councils and meetings where Hincmar presided as the leading authority of the Frankish church", "✓"],
+["Grimbald of Saint-Bertin", "Alfred the Great", "Alfred the Great personally recruited Grimbald in 886 AD", "✓"],
+["Alfred the Great", "Asser", "Asser was Alfred the Great's personal biographer and closest scholarly companion at his Wessex court", "✓"],
+["Asser", "Edward the Elder", "Edward the Elder was a pupil of Asser", "✓"],
+["Edward the Elder", "Aethelfled", "Ethelfled grew up with her brother Edward the Elder", "✓"],
+["Aethelfled", "Aethelred I of Wessex", "Aethelred I was the uncle of Ethelfled", "✓"],
+
+// ── 1000–1200 AD: High Medieval ──────────────────────────────────
+["Alfred the Great", "Archbishop Plegmund", "Plegmund was a Mercian scholar whom Alfred personally recruited to be his Archbishop of Canterbury in 890", "✓"],
+["Archbishop Plegmund", "Athelstan", "Plegmund and Athelstan met and were personal colleagues in the court of Alfred the Great during the late 9th century", "✓"],
+["Athelstan", "Saint Dunstan", "Saint Dunstan began his career as a young, high-born courtier at the court of King Athelstan in the 930s", "✓"],
+["Saint Dunstan", "Aethelred the Unready", "Dunstan crowned Ethelred in 978", "✓"],
+["Aethelred the Unready", "Emma of Normandy", "Aethelred  married Emma of Normandy in 1002 ", "✓"],
+["Emma of Normandy", "Canute the Great", "After the death of her first husband (Aethelred), Emma married Canute the Great in 1017", "✓"],
+["Canute the Great", "Robert I", "In 1033-1034 AD, Canute and Robert were involved in intense diplomatic negotiations and military standoffs", "✓"],
+["Robert I", "William the Conqueror", "Robert was William’s father", "✓"],
+["William the Conqueror", "William II", "William the Conqueror was the father of William II", "✓"],
+["William II", "Saint Anselm of Canterbury", "As Archbishop of Canterbury, Anselm had a notoriously volatile relationship with the Conqueror’s son; They met frequently at royal councils, such as the Council of Rockingham in 1095", "✓"],
+["Saint Anselm of Canterbury", "Pope Urban II", "After being exiled by William II, Anselm traveled to Italy and stayed with Pope Urban II", "✓"],
+["Pope Urban II", "Peter the Hermit", "Peter met Pope Urban II at Clermont 1095 and became the great popular preacher of the First Crusade", "✓"],
+["Peter the Hermit", "Godfrey of Bouillon", "Peter the Hermit marched with Godfrey's armies on the First Crusade to Jerusalem 1096–1099", "✓"],
+["Godfrey of Bouillon", "Fulcher of Chartres", "Fulcher was Godfrey's chaplain and personal historian; he was at Jerusalem 1099 recording everything", "✓"],
+["Fulcher of Chartres", "Baldwin II of Jerusalem", "Both me were veterans of the original 1096 expedition", "✓"],
+["Baldwin II of Jerusalem", "Hugh de Payens", "As the King of Jerusalem, Baldwin II personally provided the initial quarters for Hugh de Payens and his knights on the Temple Mount", "✓"],
+["Hugh de Payens", "Bernard of Clairvaux", "Hugh traveled to France in 1127–1128 and worked directly with Bernard to draft the Latin Rule of the Templars at the Council of Troyes", "✓"],
+["Bernard of Clairvaux", "Frederick Barbarossa", "Bernard of Clairvaux personally preached the Second Crusade to Frederick Barbarossa at the Diet of Speyer in 1146", "✓"],
+["Frederick Barbarossa", "Richard the Lionheart", "As fellow leaders of the Third Crusade, Frederick and Richard were in constant contact regarding the organization of their respective armies", "✓"],
+["Richard the Lionheart", "Al-Adil I", "Richard and Al-Adil met personally on several occasions during the Third Crusade", "✓"],
+["Al-Adil I", "Saladin", "Saladin was the brother of Al-Adil", "✓"],
+["Saladin", "Richard I of England", "Saladin and Richard I were opposing commanders in the Third Crusade; Saladin sent Richard gifts when he was ill and they negotiated the truce of Jaffa 1191", "✓"],
+["Richard I of England", "Philip II of France", "Richard and Philip II of France both led the Third Crusade together before quarrelling", "✓"],
+["Philip II of France", "John of Brienne", "In 1210, King Philip personally selected John to travel to the Holy Land to marry the heiress of Jerusalem and become its King", "✓"],
+["John of Brienne", "Francis of Assisi", "John of Brienne and Saint Francis of Assisi personally met during the Fifth Crusade in 1219 AD", "✓"],
+["Francis of Assisi", "Pope Innocent III", "Francis of Assisi and Pope Innocent III personally met in Rome in either 1209 or 1210 AD", "✓"],
+["Pope Innocent III", "Pope Honorius III", "They were colleagues in the Roman Curia for decades", "✓"],
+["Pope Honorius III", "Pope Innocent IV", "Honorius III was the Pope who first called Innocent IV to Rome to serve in the Curia, starting his rapid rise through the church hierarchy", "✓"],
+["Pope Innocent IV", "Thomas Aquinas", "Innocent IV and Thomas Aquinas personally met in Rome around 1244", "✓"],
+["Thomas Aquinas", "Pope Clement IV", "As a high-ranking papal theologian, Aquinas served several popes in Rome, including Clement IV, whom he met at the papal Curia", "✓"],
+["Pope Clement IV", "Roger Bacon", "While Cardinal Guy le Gros de Foulques (the future Clement IV) was a legate in France, he met Bacon", "✓"],
+
+// ── 1200–1400 AD: Mongols, Marco Polo, Dante ──────────────────────
+["Roger Bacon", "William of Rubruck", "William of Rubruck met and shared his travel accounts with Roger Bacon", "✓"],
+["William of Rubruck", "Mongke Khan", "Möngke Khan personally met and hosted William of Rubruck in the Mongol capital, Karakorum, in 1254", "✓"],
+["Mongke Khan", "Genghis Khan", "Genghis Khan was the grandfather of Möngke Khan", "✓"],
+["Genghis Khan", "Kublai Khan", "Kublai Khan was Genghis Khan's grandson; Genghis died when Kublai was a young boy and they met briefly", "✓"],
+["Kublai Khan", "Marco Polo", "Marco Polo arrived at Kublai Khan's court in 1275 and served him for 17 years", "✓"],
+["Marco Polo", "Pietro d'Abano", "Pietro d'Abano personally interviewed Marco Polo in Venice", "✓"],
+["Pietro d'Abano", "Albertino Mussato", "Mussato was a close contemporary and intellectual peer of Pietro d'Abano in Padua", "✓"],
+["Albertino Mussato", "Giovanni Soranzo", "Albertino Mussato and Giovanni Soranzo were personal acquaintances who maintained a direct professional and intellectual connection", "✓"],
+["Giovanni Soranzo", "Dante Alighieri", "Giovanni Soranzo and Dante Alighieri met in Venice during the summer of 1321", "✓"],
+["Dante Alighieri", "Giotto di Bondone", "Dante and Giotto were friends in Florence; Dante mentions Giotto warmly in the Divine Comedy", "✓"],
+["Giotto di Bondone", "Simone Martini", "Martini was actually a pupil of Giotto;He reportedly traveled to Rome with Giotto to assist with mosaics and paintings at the old St. Peter's Basilica", "✓"],
+["Simone Martini", "Petrarch", "Martini and Petrarch became very close friends while living in Avignon in the 1330s", "✓"],
+["Petrarch", "Giovanni Boccaccio", "Petrarch and Boccaccio were close friends who corresponded for decades; the founders of Italian humanism", "✓"],
+["Giovanni Boccaccio", "Geoffrey Chaucer", "Chaucer visited Florence in 1373 the exact year Boccaccio was lecturing on Dante; Chaucer modelled Canterbury Tales on Boccaccio", "✓"],
+["Geoffrey Chaucer", "John Gower", "Chaucer and Gower were close friends; Chaucer dedicated Troilus and Criseyde to Gower", "✓"],
+["John Gower", "Thomas Arundel", "Gower personally dedicated a version of his poem Vox Clamantis to Arundel", "✓"],
+["Thomas Arundel", "Henry Beaufort", "Arundel and Beaufort sat together on the King's Council for years", "✓"],
+["Henry Beaufort", "Joan of Arc", "Cardinal Beaufort was the high-ranking English official sent to Rouen to oversee trial of Joan of Arc", "✓"],
+
+// ── 1400–1550 AD: Renaissance ────────────────────────────────────
+["Joan of Arc", "Charles VII", "Joan of Arc met Charles VII, the King of France, at Chinon in 1429;She convinced him to provide her with an army and famously stood by his side during his coronation in Reims.", "✓"],
+["Charles VII", "Pope Pius II", "King Charles VII received and met with Aeneas Silvius Piccolomini (the future Pope Pius II) in 1435", "✓"],
+["Pope Pius II", "Nicholas of Cusa", "Pius II moved in the same circles as Nicholas of Cusa;The two were prominent colleagues who worked together closely at the Council of Basel and on various diplomatic missions for the Church", "✓"],
+["Nicholas of Cusa", "Archbishop Adolf von Nassau", "As the Archbishop of Mainz, Adolf von Nassau  had formal and physical meetings with Nicholas of Cusa during Cusa's legations and reform efforts in German territories", "✓"],
+["Archbishop Adolf von Nassau", "Johannes Gutenberg", "In 1465, Archbishop Adolf von Nassau formally recognized Gutenberg's achievements by making him a gentleman of the court", "✓"],
+["Johannes Gutenberg", "Cardinal Juan de Carvajal", "Guttenberg met Juan de Carvajal in Frankfurt around 1454", "✓"],
+["Cardinal Juan de Carvajal", "Lorenzo de Medici", "Cardinal Juan de Carvajal worked closely with Lorenzo de' Medici", "✓"],
+["Lorenzo de Medici", "Leonardo da Vinci", "Lorenzo de Medici was the primary patron and mentor of Leonardo da Vinci", "✓"],
+["Leonardo da Vinci", "Machiavelli", "Both worked for Cesare Borgia in 1502 and collaborated on the Arno diversion project in Florence 1503", "✓"],
+["Leonardo da Vinci", "Michelangelo", "Both worked in Florence and Rome simultaneously; rivals who interacted in Italian court and artistic circles", "✓"],
+["Machiavelli", "Pope Leo X", "After the  Leo X returned to power in Florence, Machiavelli sought the Pope's patronage and personally presented his Florentine Histories to him", "✓"],
+["Pope Leo X", "Agostino Chigi", "Chigi hosted the Pope at lavish banquets in Rome where the leading intellectuals of the day gathered", "✓"],
+["Agostino Chigi", "Erasmus", "Agostino Chigi met Desiderius Erasmus in Rome in 1509", "✓"],
+["Erasmus", "Thomas More", "Erasmus and More were close friends; Erasmus stayed at More's house and wrote Praise of Folly there", "✓"],
+["Thomas More", "Henry VIII", "More was Henry VIII's Lord Chancellor and close friend before Henry had him executed in 1535", "✓"],
+["Henry VIII", "John Frederick I, Elector of Saxony", "John Frederick was the leader of the Schmalkaldic League and a key ally Henry sought while breaking away from Rome", "✓"],
+["John Frederick I, Elector of Saxony", "Martin Luther", "John Frederick I was the primary political protector and personal friend of Martin Luther", "✓"],
+["Martin Luther", "Philip Melanchthon", "Melanchthon was Luther's closest colleague at Wittenberg; they worked together daily for decades", "✓"],
+["Philip Melanchthon", "John Calvin", "Both were leading Protestant Reformers who corresponded; Melanchthon met Calvin at the religious colloquies of the 1540s", "✓"],
+
+// ── 1540–1650 AD: Scientific Revolution ─────────────────────────
+["John Calvin", "Theodore Beza", "Met in Geneva; Beza was Calvin's assistant and successor", "✓"],
+["Theodore Beza", "Johannes Sturm", "Sturm was a famous educator in Strasbourg who worked closely with Beza on reforming European schools", "✓"],
+["Johannes Sturm", "Tycho Brahe", "Brahe visited Sturm in Strasbourg during his travels and was influenced by Sturm's educational theories", "✓"],
+["Tycho Brahe", "Johannes Kepler", "Kepler worked as Tycho's assistant in Prague from 1600; they were colleagues for 18 months until Tycho's death", "✓"],
+["Johannes Kepler", "Galileo", "Kepler and Galileo corresponded extensively; Kepler validated Galileo's telescope observations and they shared data", "✓"],
+["Galileo", "John Milton", "Milton visited Galileo under house arrest near Florence in 1638 and wrote about it in Areopagitica 1644", "✓"],
+["John Milton", "Samuel Hartlib", "Milton and Hartlib were close friends and intellectual collaborators", "✓"],
+["Samuel Hartlib", "John Evelyn", "Hartlib and the diarist John Evelyn were long-time associates. Evelyn’s diary records multiple personal visits to Hartlib’s house to discuss gardens, science, and the invisible college that became the Royal Society", "✓"],
+["John Evelyn", "Christopher Wren", "Evelyn and Wren were close friends and founding members of the Royal Society", "✓"],
+["Christopher Wren", "Isaac Newton", "Both were members of the Royal Society; Newton and Wren met regularly at Royal Society meetings in London", "✓"],
+
+// ── 1650–1800 AD: Enlightenment ──────────────────────────────────
+["Isaac Newton", "John Locke", "Newton and Locke met in London in 1689 and became close friends; they corresponded for years", "✓"],
+["John Locke", "John Somers, 1st Baron Somers", "Locke served as an advisor to Somers", "✓"],
+["John Somers, 1st Baron Somers", "Henry St John, 1st Viscount Bolingbroke", "As two of the most powerful politicians in England during the early 1700s, they met constantly in Parliament and at Court", "✓"],
+["Henry St John, 1st Viscount Bolingbroke", "Voltaire", "While in exile in France, Bolingbroke lived at his estate, La Source, where the young Voltaire was a frequent guest", "✓"],
+["Voltaire", "Frederick the Great", "Voltaire lived at Frederick's court in Potsdam 1750–1753; they dined together nightly", "✓"],
+["Voltaire", "Benjamin Franklin", "Voltaire and Franklin embraced publicly at the French Academy of Sciences in Paris in April 1778", "✓"],
+["Benjamin Franklin", "George Washington", "Colleagues at the Continental Congress from 1775; they met regularly throughout the Revolution", "✓"],
+["George Washington", "Alexander Hamilton", "Hamilton was Washington's aide-de-camp during the Revolution and his Treasury Secretary", "✓"],
+["Alexander Hamilton", "Thomas Jefferson", "Hamilton and Jefferson were both in Washington's cabinet; fierce political rivals who met constantly", "✓"],
+["Thomas Jefferson", "James Monroe", " Monroe was Jefferson's close friend, political protégé, and official envoy.", "✓"],
+["James Monroe", "Napoleon Bonaparte", "Monroe personally met and dined with Napoleon at the Louvre to finalize the Louisiana Purchase in 1803", "✓"],
+["Napoleon Bonaparte", "Goethe", "Napoleon met Goethe personally at Erfurt on October 2, 1808 — 'Voilà un homme!'", "✓"],
+["Napoleon Bonaparte", "Wellington", "Wellington defeated Napoleon at Waterloo in June 1815", "✓"],
+["Napoleon Bonaparte", "Talleyrand", "Talleyrand was Napoleon's chief diplomat; they met almost daily for years", "✓"],
+
+// ── 1800–1870 AD: Romantic Era ────────────────────────────────────
+["Goethe", "Beethoven", "Goethe and Beethoven met at Teplitz in summer 1812 and spent several days together", "✓"],
+["Goethe", "Schopenhauer", "Schopenhauer was introduced to Goethe in 1813; they met in Weimar and discussed colour theory", "✓"],
+["Beethoven", "Franz Schubert", "The most accepted meeting occurred in March 1827;Schubert, accompanied by friends such as the composer Anselm Hüttenbrenner, visited the dying Beethoven at his flat in Vienna", "✓"],
+["Beethoven", "Franz Liszt", "The 11-year-old Liszt performed for Beethoven in Vienna in 1823", "✓"],
+["Franz Schubert", "Franz Liszt", "It is widely reported that Schubert was in the audience for Liszt’s farewell concert in Vienna in April 1823", "✓"],
+["Franz Liszt", "Frédéric Chopin", "Liszt and Chopin met in Paris in 1831 and were close friends", "✓"],
+["Frédéric Chopin", "George Sand", "Chopin and George Sand were in a relationship from 1838–1847", "✓"],
+["George Sand", "Gustave Flaubert", "George Sand and Flaubert were close friends who corresponded for decades", "✓"],
+["Gustave Flaubert", "Ivan Turgenev", "Turgenev and Flaubert were close friends in Paris; they met regularly and dined together", "✓"],
+["Ivan Turgenev", "Leo Tolstoy", "Turgenev and Tolstoy knew each other in St Petersburg and Paris literary circles; they had a famous quarrel in 1861", "✓"],
+["Franz Liszt", "Richard Wagner", "Liszt met Wagner in Dresden in the late 1840s; Liszt's daughter Cosima married Wagner", "✓"],
+["Richard Wagner", "Friedrich Nietzsche", "Nietzsche visited Wagner at Tribschen dozens of times from 1869–1872; very close friends", "✓"],
+["Charles Darwin", "Thomas Huxley", "Darwin and Huxley met in London in 1851 and became close lifelong friends; Huxley was Darwin's bulldog", "✓"],
+["Thomas Huxley", "Herbert Spencer", "Huxley and Spencer were colleagues in the London scientific world; both evolutionary thinkers", "✓"],
+["Abraham Lincoln", "Frederick Douglass", "Douglass met Lincoln at the White House three times: August 1863, August 1864, and at Lincoln's second inauguration", "✓"],
+["Frederick Douglass", "Booker T. Washington", "Douglass mentored Booker T. Washington; they met at Douglass's Cedar Hill home in Washington DC", "✓"],
+
+// ── 1870–1920 AD: Late 19th / Early 20th Century ─────────────────
+["Friedrich Nietzsche", "Lou Andreas-Salomé", "Nietzsche met Lou Salomé in Rome in April 1882 and proposed marriage", "✓"],
+["Lou Andreas-Salomé", "Sigmund Freud", "Lou trained directly under Freud in Vienna from 1912; they met regularly for years", "✓"],
+["Sigmund Freud", "Carl Jung", "Jung met Freud in Vienna in February 1907; they talked for 13 hours on their first meeting", "✓"],
+["Leo Tolstoy", "Maxim Gorky", "Gorky visited Tolstoy at Yasnaya Polyana and wrote a famous memoir about him", "✓"],
+["Maxim Gorky", "Vladimir Lenin", "Gorky and Lenin were close friends; Lenin stayed at Gorky's villa on Capri in 1908", "✓"],
+["Vladimir Lenin", "Leon Trotsky", "Lenin and Trotsky worked together from the 1903 party congress; Trotsky was Lenin's key ally in the revolution", "✓"],
+["Leon Trotsky", "Joseph Stalin", "Trotsky and Stalin were rivals within the Bolshevik party; they met at many congresses and party events", "✓"],
+["Booker T. Washington", "W.E.B. Du Bois", "They debated publicly and met at numerous conferences across America for decades", "✓"],
+["Booker T. Washington", "Theodore Roosevelt", "Roosevelt invited Booker T. Washington to dine at the White House in 1901", "✓"],
+["Theodore Roosevelt", "Woodrow Wilson", "Wilson defeated Roosevelt and Taft in the 1912 three-way election; both were US Presidents who met officially", "✓"],
+["Woodrow Wilson", "Georges Clemenceau", "Wilson and Clemenceau met repeatedly at the Paris Peace Conference in 1919", "✓"],
+["Georges Clemenceau", "Winston Churchill", "Both at the Paris Peace Conference 1919; Churchill served under Lloyd George alongside Clemenceau", "✓"],
+
+// ── 1919–1945 AD: The World Wars era ────────────────────────────
+["Winston Churchill", "Franklin Roosevelt", "Met on HMS Prince of Wales in August 1941 to sign the Atlantic Charter", "✓"],
+["Franklin Roosevelt", "Joseph Stalin", "Roosevelt, Churchill and Stalin met at Tehran November 1943 and Yalta February 1945", "✓"],
+["Joseph Stalin", "Vyacheslav Molotov", "Molotov was Stalin's closest associate and served as his right-hand man for decades", "✓"],
+["Vyacheslav Molotov", "Joachim von Ribbentrop", "They signed the non -agression treaty in 1939", "✓"],
+["Joachim von Ribbentrop", "Adolf Hitler", "Ribbentrop was Hitler's Foreign Minister and primary negotiator.", "✓"],
+["Adolf Hitler", "Mussolini", "Hitler and Mussolini met at the Brenner Pass in March 1940 and multiple times throughout the war", "✓"],
+["Adolf Hitler", "Neville Chamberlain", "Chamberlain flew to meet Hitler at Munich in September 1938 and signed the Munich Agreement", "✓"],
+
+// ══════════════════════════════════════════════════════════════════
+// EXTRA CONNECTIONS for the 50 famous people
+// (connecting them to the spine and to each other)
+// ══════════════════════════════════════════════════════════════════
+["Sigmund Freud", "Albert Einstein", "Freud and Einstein met in Berlin in 1927 and exchanged famous published letters", "✓"],
+["Sigmund Freud", "Salvador Dalí", "Dalí visited Freud at his home in London in July 1938", "✓"],
+["Albert Einstein", "Charlie Chaplin", "Einstein and Chaplin met at the Hollywood premiere of City Lights in February 1931", "✓"],
+["Albert Einstein", "J. Robert Oppenheimer", "Both at the Institute for Advanced Study in Princeton from 1947", "✓"],
+["Albert Einstein", "Marie Curie", "Both at the Solvay Conference 1911; they became friends and corresponded", "✓"],
+["Charlie Chaplin", "Mahatma Gandhi", "Chaplin met Gandhi at a textile worker's home in the East End of London in September 1931", "✓"],
+["Charlie Chaplin", "George Bernard Shaw", "Shaw visited Chaplin's studio in Hollywood in 1933", "✓"],
+["Mahatma Gandhi", "Jawaharlal Nehru", "Gandhi mentored Nehru from 1919; they worked together for 30 years", "✓"],
+["Mahatma Gandhi", "Rabindranath Tagore", "Tagore gave Gandhi the title 'Mahatma'; they were close friends who debated India's future", "✓"],
+["Jawaharlal Nehru", "JFK", "Nehru visited Washington and met JFK at the White House in November 1961", "✓"],
+["Winston Churchill", "Charles de Gaulle", "Churchill and de Gaulle worked together in London throughout WWII; they met constantly", "✓"],
+["Franklin Roosevelt", "Eleanor Roosevelt", "Eleanor was FDR's wife and an independent political force", "✓"],
+["Joseph Stalin", "Mao Zedong", "Mao visited Stalin in Moscow in December 1949 — Mao's first trip abroad", "✓"],
+["Mao Zedong", "Richard Nixon", "Nixon's historic visit to China in February 1972; he met Mao at his private residence in Beijing", "✓"],
+["Richard Nixon", "Elvis Presley", "Elvis arrived at the White House on December 21, 1970 requesting a DEA badge; Nixon met him in the Oval Office", "✓"],
+["Richard Nixon", "JFK", "Nixon and JFK debated in the famous 1960 televised presidential debates", "✓"],
+["Elvis Presley", "The Beatles", "The Beatles visited Elvis at his Bel Air home on August 27, 1965 and jammed together", "✓"],
+["The Beatles", "Bob Dylan", "Dylan met The Beatles at the Hotel Delmonico in New York in August 1964", "✓"],
+["The Beatles", "Maharishi Mahesh Yogi", "The Beatles visited Maharishi's ashram in Rishikesh, India in February 1968", "✓"],
+["Bob Dylan", "Joan Baez", "Baez and Dylan performed together throughout the early 1960s folk revival; they were in a relationship 1961–65", "✓"],
+["Bob Dylan", "Martin Luther King Jr.", "Both appeared at the March on Washington in August 1963; Dylan performed before MLK's speech", "✓"],
+["Martin Luther King Jr.", "JFK", "MLK met JFK at the White House on October 23, 1963", "✓"],
+["Martin Luther King Jr.", "Malcolm X", "MLK and Malcolm X met briefly at the US Capitol on March 26, 1964 — their only known meeting", "✓"],
+["Martin Luther King Jr.", "Coretta Scott King", "Coretta met Martin at Boston University in 1952 and they married in 1953", "✓"],
+["Malcolm X", "Fidel Castro", "Malcolm X visited Castro at the Hotel Theresa in Harlem in September 1960", "✓"],
+["Fidel Castro", "Che Guevara", "Castro and Guevara met in Mexico City in 1955; Guevara joined the Cuban Revolution", "✓"],
+["Fidel Castro", "Nikita Khrushchev", "Castro and Khrushchev met at the UN General Assembly in New York in September 1960", "✓"],
+["Nikita Khrushchev", "JFK", "JFK and Khrushchev met at the Vienna Summit in June 1961", "✓"],
+["Che Guevara", "Jean-Paul Sartre", "Sartre and de Beauvoir met Guevara in Cuba in 1960; Sartre called him 'the most complete human being of our age'", "✓"],
+["Jean-Paul Sartre", "Simone de Beauvoir", "Sartre and de Beauvoir met at the École Normale Supérieure in 1929 and were lifelong partners", "✓"],
+["Jean-Paul Sartre", "Pablo Picasso", "Sartre and Picasso were friends in Paris during and after WWII; both prominent left-wing intellectuals", "✓"],
+["Pablo Picasso", "Frida Kahlo", "Picasso and Kahlo met in Paris in 1939; Picasso admired her and they exchanged earrings", "✓"],
+["Pablo Picasso", "Ernest Hemingway", "Picasso and Hemingway met in Paris in the 1920s through Gertrude Stein's salon", "✓"],
+["Pablo Picasso", "Georges Braque", "Picasso and Braque co-created Cubism in Paris 1907–1914; they were closest collaborators", "✓"],
+["Frida Kahlo", "Diego Rivera", "Kahlo and Rivera were married twice; their relationship defined both their lives", "✓"],
+["Frida Kahlo", "Leon Trotsky", "Trotsky lived in Diego Rivera's house in Mexico and had an affair with Frida Kahlo in 1937", "✓"],
+["Salvador Dalí", "Alfred Hitchcock", "Dalí designed the dream sequence for Hitchcock's Spellbound; they worked together in Hollywood 1944–45", "✓"],
+["Alfred Hitchcock", "François Truffaut", "Truffaut conducted a famous 50-hour filmed interview with Hitchcock in Hollywood in 1962", "✓"],
+["François Truffaut", "Martin Scorsese", "Truffaut and Scorsese were part of the same New Wave–influenced director generation; they met at film festivals in the 1970s", "✓"],
+["Martin Scorsese", "Robert De Niro", "De Niro starred in Scorsese's Mean Streets (1973) beginning one of cinema's greatest partnerships", "✓"],
+["Nelson Mandela", "Barack Obama", "Obama met Mandela briefly in 2005 as a US Senator; Obama later delivered his eulogy in December 2013", "✓"],
+["Nelson Mandela", "Fidel Castro", "Mandela visited Cuba shortly after his release from prison; they were close friends", "✓"],
+["Nelson Mandela", "Desmond Tutu", "Mandela and Tutu worked together throughout the anti-apartheid struggle", "✓"],
+["W.E.B. Du Bois", "Thurgood Marshall", "Du Bois co-founded the NAACP whose legal strategy Marshall used throughout his career", "✓"],
+["Thurgood Marshall", "Elena Kagan", " Kagan served as a law clerk for Justice Marshall during the Supreme Court's 1987-1988 term", "✓"],
+["Elena Kagan", "Barack Obama", "Kagan and Obama were colleagues at the University of Chicago Law School in the early 1990s, where both were on the faculty", "✓"],
+["Barack Obama", "Ted Kennedy", "The two were close colleagues in the U.S. Senate, and Ted Kennedy was a key mentor and supporter during Obama's 2008 campaign", "✓"],
+["Ted Kennedy", "JFK", "They were brothers who worked closely together in Washington until JFK's death in 1963", "✓"],
+["Marie Curie", "Henri Poincaré", "Both at the Solvay Conference 1911; Poincaré championed Curie's Nobel Prize", "✓"],
+["Herbert Spencer", "John Chapman", "Spencer actually lived in Chapman's house at 142 Strand for several years and worked for him as an editor", "✓"],
+["John Chapman", "Karl Marx", "Karl Marx (Met in London in 1851 to discuss publishing Das Kapital's early ideas)", "✓"],
+["Karl Marx", "Friedrich Engels", "Marx and Engels met in Paris in August 1844 and became lifelong collaborators", "✓"],
+["Friedrich Engels", "Georgi Plekhanov", "Plekhanov, the father of Russian Marxism, met Engels in London and corresponded with him frequently", "✓"],
+["Georgi Plekhanov", "Vladimir Lenin", " During his 1895 trip to Switzerland, Lenin personally met with Plekhanov to discuss the formation of the League of Struggle for the Emancipation of the Working Class", "✓"],
+["Nikola Tesla", "Thomas Edison", "Tesla worked directly for Edison in New York in 1884 before their famous falling out over AC vs DC", "✓"],
+["Thomas Edison", "Henry Ford", "Edison encouraged Ford in 1896; they became close friends and neighbours in later life", "✓"],
+["Mark Twain", "Nikola Tesla", "Twain visited Tesla's laboratory in New York in the 1890s; they were close friends", "✓"],
+["Mark Twain", "Ulysses S. Grant", "Grant and Twain were close friends; Twain's company published Grant's memoirs", "✓"],
+["Ulysses S. Grant", "Abraham Lincoln", "Lincoln appointed Grant as general-in-chief; they met multiple times during the Civil War", "✓"],
+
+// Connecting Plato/Socrates era back further
+["Plato", "Socrates", "Plato was Socrates's devoted student in Athens for over a decade", "✓"],
+["Socrates", "Xenophon", "Xenophon was a devoted student of Socrates and knew him personally in Athens", "✓"],
+["Socrates", "Alcibiades", "Alcibiades was Socrates's most controversial student and close companion", "✓"],
+["Herodotus", "Protagoras", "Both men were selected by the Athenian government to be original colonists of Thurii in 444/3 BC", "✓"],
+["Protagoras", "Pericles", "Pericles was a close personal friend of Protagoras. He personally commissioned Protagoras to write the laws for the very colony (Thurii) where Herodotus lived", "✓"],
+["Pericles", "Aspasia", "They were life partners and intellectual collaborators", "✓"],
+["Aspasia", "Socrates", " She was a teacher and friend to Socrates, who reportedly sought her out for her wisdom on rhetoric and love", "✓"],
+["Herodotus", "Sophocles", "They were documented friends; Sophocles even wrote a poem dedicated to Herodotus", "✓"],
+];
+
+const ERA = {
+  "Socrates": "470 BC", "Plato": "428 BC", "Herodotus": "484 BC", "Protagoras": "490 BC", "Aspasia": "470 BC", "Pericles": "495 BC", "Sophocles": "496 BC", "Xenophon": "430 BC", "Alcibiades": "450 BC",
+  "Aristotle": "384 BC", "Alexander the Great": "356 BC", "Ptolemy I": "367 BC", "Euclid": "300 BC", "Ptolemy II Philadelphus": "309 BC",
+  "Ptolemy III Euergetes": "280 BC", "Ptolemy IV Philopator": "245 BC", "Antiochus III the Great": "241 BC", "Hannibal": "247 BC", "Scipio Africanus": "236 BC",
+  "Cato the Elder": "234 BC", "Scipio Aemilianus": "185 BC", "Gaius Marius": "157 BC", "Lucius Cornelius Sulla": "138 BC",
+  "Julius Caesar": "100 BC", "Cicero": "106 BC", "Cleopatra VII": "69 BC", "Mark Antony": "83 BC",
+  "Augustus Caesar": "63 BC", "Virgil": "70 BC", "Jesus Christ": "4 BC", "Herod Antipas": "20 BC", "Pontius Pilate": "~15 BC",
+  "Tiberius": "42 BC", "Caligula": "12 AD", "Claudius": "10 BC", "Nero": "37 AD", "Seneca": "4 BC",
+  "Vespasian": "9 AD", "Josephus": "37 AD", "Titus": "39 AD", "Domitian": "51 AD",
+  "Tacitus": "56 AD", "Pliny the Younger": "61 AD", "Trajan": "53 AD", "Hadrian": "76 AD",
+  "Antoninus Pius": "86 AD", "Marcus Aurelius": "121 AD", "Galen": "129 AD", "Commodus": "161 AD",
+  "Septimius Severus": "145 AD", "Caracalla": "188 AD", "Ulpian": "170 AD", "Alexander Severus": "208 AD",
+  "Valerian": "200 AD", "Gallienus": "218 AD", "Aurelian": "214 AD", "Plotinus": "204 AD", "Porphyry": "234 AD", "Diocletian": "244 AD",
+  "Constantine I": "272 AD", "Eusebius of Caesarea": "260 AD", "Athanasius of Alexandria": "296 AD",
+  "Emperor Julian": "331 AD", "Libanius": "314 AD", "John Chrysostom": "347 AD", "Theodosius I": "347 AD",
+  "Ambrose of Milan": "339 AD", "Augustine of Hippo": "354 AD", "Prosper of Aquitaine": "390 AD", "Orosius": "375 AD",
+  "Pope Leo I": "400 AD", "Attila the Hun": "406 AD", "Edeko": "405 AD", "Odoacer": "433 AD", "Theodoric the Great": "454 AD",
+  "Boethius": "477 AD", "Cassiodorus": "485 AD", "Pope Pelagius II": "520 AD", "Pope Gregory I": "540 AD", "Augustine of Canterbury": "534 AD",
+  "Paulinus of York": "584 AD", "Saint Hilda of Whitby": "614 AD", "John of Beverley": "640 AD", "Bede the Venerable": "672 AD", "Boniface": "675 AD",
+  "Pepin the Short": "714 AD", "Charlemagne": "742 AD", "Alcuin of York": "735 AD", "Pope Leo III": "750 AD",
+  "Rabanus Maurus": "780 AD", "Walafrid Strabo": "808 AD", "Charles the Bald": "823 AD",
+  "Johannes Scotus Eriugena": "815 AD", "Hincmar of Reims": "806 AD", "Grimbald of Saint-Bertin": "820 AD", "Alfred the Great": "849 AD", "Asser": "848 AD", "Edward the Elder": "874 AD",
+  "Aethelfled": "870 AD", "Archbishop Plegmund": "850 AD", "Athelstan": "894 AD", "Saint Dunstan": "909 AD", "Aethelred the Unready": "968 AD", "Emma of Normandy": "984 AD", "Canute the Great": "990 AD", "Robert I": "1000 AD",
+   "William the Conqueror": "1028 AD", "William II": "1057 AD", "Saint Anselm of Canterbury": "1033 AD", "Pope Urban II": "1042 AD",
+  "Peter the Hermit": "1050 AD", "Godfrey of Bouillon": "1060 AD", "Fulcher of Chartres": "1059 AD", "Baldwin II of Jerusalem": "1075 AD", "Hugh de Payens": "1070",
+  "Bernard of Clairvaux": "1090 AD", "Frederick Barbarossa": "1122 AD", "Richard the Lionheart": "1157 AD", "Al-Adil I": "1145 AD", "Saladin": "1137 AD",
+  "Richard I of England": "1157 AD", "Philip II of France": "1165 AD", "John of Brienne": "1170 AD", "Francis of Assisi": "1181 AD",
+  "Pope Innocent III": "1160 AD", "Pope Honorius III": "1148 AD", "Pope Innocent IV": "1195 AD", "Thomas Aquinas": "1225 AD", "Pope Clement IV": "1190 AD", "Roger Bacon": "1214 AD",
+  "William of Rubruck": "1220", "Mongke Khan": "1209", "Genghis Khan": "1162 AD", "Kublai Khan": "1215 AD", "Marco Polo": "1254 AD", "Pietro d'Abano": "1257 AD", "Albertino Mussato": "1261 AD",
+  "Giovanni Soranzo": "1240 AD", "Dante Alighieri": "1265 AD", "Giotto di Bondone": "1267 AD", "Simone Martini": "1284 AD", "Petrarch": "1304 AD",
+  "Giovanni Boccaccio": "1313 AD", "Geoffrey Chaucer": "1343 AD", "John Gower": "1330 AD", "Thomas Arundel": "1353 AD", "Henry Beaufort": "1375 AD",
+  "Joan of Arc": "1412 AD", "Charles VII": "1403 AD", "Pope Pius II": "1405 AD", "Nicholas of Cusa": "1401 AD",
+   "Archbishop Adolf von Nassau": "1423 AD", "Johannes Gutenberg": "1400 AD", "Cardinal Juan de Carvajal": "1400 AD", "Lorenzo de Medici": "1449 AD", "Leonardo da Vinci": "1452 AD",
+  "Machiavelli": "1469 AD", "Pope Leo X": "1475 AD", "Agostino Chigi": "1466 AD", "Michelangelo": "1475 AD", "Erasmus": "1466 AD", "Thomas More": "1478 AD",
+  "Henry VIII": "1491 AD", "John Frederick I, Elector of Saxony": "1503 AD", "Martin Luther": "1483 AD", "Philip Melanchthon": "1497 AD", "John Calvin": "1509 AD",
+  "Theodore Beza": "1519 AD", "Johannes Sturm": "1507 AD", "Tycho Brahe": "1546 AD", "Johannes Kepler": "1571 AD", "Galileo": "1564 AD", "John Milton": "1608 AD",
+  "Samuel Hartlib": "1600 AD", "John Evelyn": "1620 AD", "Christopher Wren": "1632 AD", "Isaac Newton": "1643 AD", "John Locke": "1632 AD",
+  "John Somers, 1st Baron Somers": "1651 AD", "Henry St John, 1st Viscount Bolingbroke": "1678 AD", "Voltaire": "1694 AD", "Frederick the Great": "1712 AD", "Benjamin Franklin": "1706 AD",
+  "George Washington": "1732 AD", "Alexander Hamilton": "1755 AD", "Thomas Jefferson": "1743 AD", "James Monroe": "1758 AD",
+  "Napoleon Bonaparte": "1769 AD", "Goethe": "1749 AD", "Wellington": "1769 AD", "Talleyrand": "1754 AD",
+  "Beethoven": "1770 AD", "Schopenhauer": "1788 AD", "Franz Schubert": "1797 AD", "Franz Liszt": "1811 AD",
+  "Frédéric Chopin": "1810 AD", "George Sand": "1804 AD", "Gustave Flaubert": "1821 AD",
+  "Ivan Turgenev": "1818 AD", "Leo Tolstoy": "1828 AD", "Richard Wagner": "1813 AD",
+  "Friedrich Nietzsche": "1844 AD", "Charles Darwin": "1809 AD", "Thomas Huxley": "1825 AD",
+  "Herbert Spencer": "1820 AD", "Karl Marx": "1818 AD", "John Chapman": "1821 AD", "Friedrich Engels": "1820 AD",
+  "Abraham Lincoln": "1809 AD", "Frederick Douglass": "1818 AD", "Booker T. Washington": "1856 AD",
+  "Lou Andreas-Salomé": "1861 AD", "Sigmund Freud": "1856 AD", "Carl Jung": "1875 AD",
+  "Maxim Gorky": "1868 AD", "Vladimir Lenin": "1870 AD", "Georgi Plekhanov": "1856 AD", "Leon Trotsky": "1879 AD", "Joseph Stalin": "1878 AD",
+  "W.E.B. Du Bois": "1868 AD", "Theodore Roosevelt": "1858 AD", "Woodrow Wilson": "1856 AD",
+  "Georges Clemenceau": "1841 AD", "Winston Churchill": "1874 AD",
+  "Nikola Tesla": "1856 AD", "Thomas Edison": "1847 AD", "Henry Ford": "1863 AD", "Mark Twain": "1835 AD",
+  "Ulysses S. Grant": "1822 AD", "Thurgood Marshall": "1908 AD",
+  "Albert Einstein": "1879 AD", "Marie Curie": "1867 AD", "Henri Poincaré": "1854 AD",
+  "J. Robert Oppenheimer": "1904 AD",
+  "Franklin Roosevelt": "1882 AD", "Eleanor Roosevelt": "1884 AD",
+  "Adolf Hitler": "1889 AD", "Joachim von Ribbentrop": "1893 AD", "Vyacheslav Molotov": "1890 AD", "Mussolini": "1883 AD", "Neville Chamberlain": "1869 AD",
+  "Mahatma Gandhi": "1869 AD", "Rabindranath Tagore": "1861 AD", "Jawaharlal Nehru": "1889 AD",
+  "Mao Zedong": "1893 AD", "Charles de Gaulle": "1890 AD",
+  "Sigmund Freud": "1856 AD", "Salvador Dalí": "1904 AD",
+  "Charlie Chaplin": "1889 AD", "George Bernard Shaw": "1856 AD",
+  "Pablo Picasso": "1881 AD", "Georges Braque": "1882 AD", "Frida Kahlo": "1907 AD", "Diego Rivera": "1886 AD",
+  "Ernest Hemingway": "1899 AD", "Jean-Paul Sartre": "1905 AD", "Simone de Beauvoir": "1908 AD",
+  "Alfred Hitchcock": "1899 AD", "François Truffaut": "1932 AD", "Martin Scorsese": "1942 AD", "Robert De Niro": "1943 AD",
+  "Fidel Castro": "1926 AD", "Che Guevara": "1928 AD", "Nikita Khrushchev": "1894 AD",
+  "JFK": "1917 AD", "Martin Luther King Jr.": "1929 AD", "Malcolm X": "1925 AD", "Coretta Scott King": "1927 AD",
+  "Richard Nixon": "1913 AD", "Elvis Presley": "1935 AD", "The Beatles": "1960 AD",
+  "Bob Dylan": "1941 AD", "Joan Baez": "1941 AD",
+  "Nelson Mandela": "1918 AD", "Desmond Tutu": "1931 AD", "Barack Obama": "1961 AD", "Elena Kagan": "1960 AD",
+  "Frank Sinatra": "1915 AD",
+};
+
+// ═══════════════════════════════════════════════════════
+// GRAPH
+// ═══════════════════════════════════════════════════════
+const GRAPH = {};
+const DISPLAY = {};
+
+EDGES.forEach(([a, b, conn, conf]) => {
+  const ak = a.toLowerCase(), bk = b.toLowerCase();
+  DISPLAY[ak] = a; DISPLAY[bk] = b;
+  if (!GRAPH[ak]) GRAPH[ak] = [];
+  if (!GRAPH[bk]) GRAPH[bk] = [];
+  if (!GRAPH[ak].some(e => e.to === bk)) GRAPH[ak].push({to:bk,conn,conf});
+  if (!GRAPH[bk].some(e => e.to === ak)) GRAPH[bk].push({to:ak,conn,conf});
+});
+
+const ALL_NAMES = Object.values(DISPLAY).sort((a,b) => a.localeCompare(b));
+
+// Populate datalist
+const dl = document.getElementById('names-list');
+ALL_NAMES.forEach(n => {
+  const o = document.createElement('option');
+  o.value = n; dl.appendChild(o);
+});
+
+// Populate count
+document.getElementById('name-count').textContent = ALL_NAMES.length;
+
+// ═══════════════════════════════════════════════════════
+// RESOLVE + BFS
+// ═══════════════════════════════════════════════════════
+function resolve(input) {
+  const s = input.trim().toLowerCase();
+  if (GRAPH[s]) return s;
+  for (const k of Object.keys(GRAPH)) {
+    if (k === s) return k;
+    if (k.includes(s) || s.includes(k)) return k;
+  }
+  const first = s.split(' ')[0];
+  if (first.length > 2) {
+    for (const k of Object.keys(GRAPH)) {
+      if (k.startsWith(first)) return k;
+    }
+  }
+  return null;
+}
+
+function bfs(a, b) {
+  const start = resolve(a), end = resolve(b);
+  if (!start || !end || start === end) return {path:null,start,end};
+  const prev = {[start]:null};
+  const queue = [start];
+  while (queue.length) {
+    const cur = queue.shift();
+    for (const edge of (GRAPH[cur]||[])) {
+      if (edge.to in prev) continue;
+      prev[edge.to] = {from:cur,conn:edge.conn,conf:edge.conf};
+      if (edge.to === end) {
+        const path = [];
+        let node = end;
+        while (node) {
+          const p = prev[node];
+          path.unshift({name:DISPLAY[node]||node,conn:p?p.conn:null,conf:p?p.conf:'✓'});
+          node = p?p.from:null;
+        }
+        return {path,start,end};
+      }
+      queue.push(edge.to);
+    }
+  }
+  return {path:null,start,end};
+}
+
+// ═══════════════════════════════════════════════════════
+// UI
+// ═══════════════════════════════════════════════════════
+const COLORS = {
+  start: {accent:'#f59e0b',bg:'rgba(245,158,11,0.12)',border:'rgba(245,158,11,0.35)'},
+  end:   {accent:'#10b981',bg:'rgba(16,185,129,0.12)',border:'rgba(16,185,129,0.35)'},
+  mid:   {accent:'#818cf8',bg:'rgba(129,140,248,0.08)',border:'rgba(129,140,248,0.25)'},
+};
+const CONF_COLOR = {'✓':'#10b981','~':'#f59e0b'};
+
+function findLink() {
+  const q1 = document.getElementById('p1').value.trim();
+  const q2 = document.getElementById('p2').value.trim();
+  const errEl = document.getElementById('error');
+  const resEl = document.getElementById('result');
+  errEl.classList.add('hidden');
+  resEl.classList.add('hidden');
+
+  if (!q1 || !q2) return;
+
+  const {path,start,end} = bfs(q1,q2);
+
+  if (path && path.length >= 2) {
+    renderChain(path);
+    resEl.classList.remove('hidden');
+    setTimeout(()=>resEl.scrollIntoView({behavior:'smooth',block:'start'}),80);
+  } else if (!start) {
+    showError(`"${q1}" not found. Pick a name from the list below.`);
+  } else if (!end) {
+    showError(`"${q2}" not found. Pick a name from the list below.`);
+  } else {
+    showError('No path found between these two people in the current database.');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('error');
+  el.textContent = '⚠️ ' + msg;
+  el.classList.remove('hidden');
+}
+
+function renderChain(path) {
+  const degrees = path.length - 2;
+  document.getElementById('degree-text').textContent =
+    degrees <= 0 ? 'Direct Meeting!' : `${degrees} intermediate people · ${path.length} total`;
+
+  const container = document.getElementById('chain-container');
+  container.innerHTML = '';
+
+  path.forEach((node, i) => {
+    const isStart = i === 0, isEnd = i === path.length - 1;
+    const col = isStart ? COLORS.start : isEnd ? COLORS.end : COLORS.mid;
+    const era = ERA[node.name] ? `born ${ERA[node.name]}` : '';
+    const label = isStart ? 'Start' : isEnd ? 'End' : `Step ${i}`;
+    const icon = isStart ? '🌟' : isEnd ? '🎯' : '👤';
+
+    const step = document.createElement('div');
+    step.className = 'step';
+    step.style.animationDelay = Math.min(i,30)*0.03 + 's';
+
+    step.innerHTML = `
+      <div class="step-row">
+        <div class="step-icon" style="background:${col.bg};border-color:${col.border}">
+          ${icon}
+        </div>
+        <div style="flex:1">
+          <div class="step-meta" style="color:${col.accent}">
+            ${label}<span class="era-label">${era}</span>
+          </div>
+          <div class="step-name">${node.name}</div>
+        </div>
+        ${node.conf ? `<span class="conf-badge" style="color:${CONF_COLOR[node.conf]||'#64748b'}">${node.conf}</span>` : ''}
+      </div>
+      ${!isEnd && path[i+1]?.conn ? `
+        <div class="connector">
+          <div class="connector-line">
+            <div style="background:linear-gradient(${col.accent}44, #818cf844)"></div>
+          </div>
+          <div class="connection-desc">${path[i+1].conn}</div>
+        </div>
+      ` : ''}
+    `;
+    container.appendChild(step);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// PEOPLE GRID
+// ═══════════════════════════════════════════════════════
+let peopleVisible = false;
+let clickCount = 0;
+
+function togglePeople() {
+  peopleVisible = !peopleVisible;
+  const grid = document.getElementById('people-grid');
+  const btn = document.getElementById('toggle-btn');
+  if (peopleVisible) {
+    grid.classList.remove('hidden');
+    btn.textContent = '▲ Hide people list';
+    if (!grid.children.length) buildPeopleGrid();
+  } else {
+    grid.classList.add('hidden');
+    btn.textContent = '▼ Browse all ' + ALL_NAMES.length + ' people';
+  }
+}
+
+function buildPeopleGrid() {
+  const grid = document.getElementById('people-grid');
+  ALL_NAMES.forEach(name => {
+    const chip = document.createElement('button');
+    chip.className = 'person-chip';
+    chip.id = 'chip-' + name.replace(/[^a-z0-9]/gi,'_');
+    const era = ERA[name] ? `<span class="chip-era">(${ERA[name]})</span>` : '';
+    chip.innerHTML = name + era;
+    chip.onclick = () => selectPerson(name);
+    grid.appendChild(chip);
+  });
+}
+
+function selectPerson(name) {
+  const p1 = document.getElementById('p1').value;
+  const p2 = document.getElementById('p2').value;
+
+  // Deselect old chips
+  document.querySelectorAll('.person-chip').forEach(c => {
+    c.classList.remove('selected-1','selected-2');
+  });
+
+  if (!p1 || p1 === p2) {
+    document.getElementById('p1').value = name;
+  } else if (!p2) {
+    document.getElementById('p2').value = name;
+  } else {
+    // Alternate
+    clickCount++;
+    if (clickCount % 2 === 1) document.getElementById('p1').value = name;
+    else document.getElementById('p2').value = name;
+  }
+
+  // Re-highlight selected chips
+  const v1 = document.getElementById('p1').value;
+  const v2 = document.getElementById('p2').value;
+  const c1 = document.getElementById('chip-' + v1.replace(/[^a-z0-9]/gi,'_'));
+  const c2 = document.getElementById('chip-' + v2.replace(/[^a-z0-9]/gi,'_'));
+  if (c1) c1.classList.add('selected-1');
+  if (c2) c2.classList.add('selected-2');
+}
+
+// Enter key support
+document.getElementById('p1').addEventListener('keydown', e => { if(e.key==='Enter') findLink(); });
+document.getElementById('p2').addEventListener('keydown', e => { if(e.key==='Enter') findLink(); });
+</script>
+</body>
+</html>
